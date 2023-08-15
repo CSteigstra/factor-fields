@@ -47,6 +47,7 @@ training:
   # training options
   batch_size: 4096
   n_iters: 30000
+  t_iters: 10000
 
   # learning rate
   lr_small: 0.001
