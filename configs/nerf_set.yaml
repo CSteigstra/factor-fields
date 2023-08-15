@@ -36,7 +36,7 @@ model:
 dataset:
   # loader options
   dataset_name: google_objs # choices=['blender', 'llff', 'nsvf', 'dtu','tankstemple', 'own_data']
-  datadir: /vlg-nfs/anpei/dataset/google_scanned_objects
+  datadir: ./data/google_scanned_objects
   ndc_ray: 0
   train_scene_list: [0,100]
   test_scene_list: [0]
@@ -52,7 +52,8 @@ dataset:
 
 training:
 
-  n_iters: 50000
+  n_iters: 70000
+  t_iters: 17500
   batch_size: 4096
 
   volume_resoInit: 128 # 128**3：
@@ -70,10 +71,10 @@ training:
 
 exportation:
   render_only: 0
-  render_test: 0
+  render_test: 1
   render_train: 0
   render_path: 0
-  export_mesh: 0
+  export_mesh: 1
   export_mesh_only: 0
 
 renderer:
