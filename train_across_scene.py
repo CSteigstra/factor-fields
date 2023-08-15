@@ -193,6 +193,8 @@ def reconstruction(cfg):
             for param_group in optimizer.param_groups:
                 param_group['lr'] = param_group['lr'] * lr_factor
 
+        
+        
         # Print the current values of the losses.
         pbar.set_description(
             f'Iteration {iteration:05d}:'
@@ -202,6 +204,17 @@ def reconstruction(cfg):
         )
         PSNRs = []
 
+        if cfg.exportation.render_test and (iteration + 1) % (cfg.training.t_iters // steps_inner) == 0:
+            os.makedirs(f'{logfolder}/imgs_test_all_{iteration}', exist_ok=True)
+            model.save(f'{logfolder}/{cfg.defaults.expname}_{iteration}.th')
+            if 'reconstructions' in cfg.defaults.mode:
+                model.scene_idx = test_dataset.test_index
+            PSNRs_test = evaluation(test_dataset, model, render_ray, f'{logfolder}/imgs_test_all_{iteration}/',
+                                    N_vis=-1, N_samples=-1, white_bg=white_bg, ndc_ray=ndc_ray, device=device)
+            summary_writer.add_scalar('test/psnr_all', np.mean(PSNRs_test), global_step=iteration)
+            n_params = model.n_parameters()
+            print(f'======> {cfg.defaults.expname} test all psnr: {np.mean(PSNRs_test)} n_params: {n_params} <========================')
+
 
     time_iter = time.time()-start
     print(f'=======> time takes: {time_iter} <=============')
@@ -209,10 +222,10 @@ def reconstruction(cfg):
     np.savetxt(f'{logfolder}/imgs_test_all/time.txt',[time_iter])
     model.save(f'{logfolder}/{cfg.defaults.expname}.th')
 
-    if args.render_train:
+    if cfg.exportation.render_train:
         os.makedirs(f'{logfolder}/imgs_train_all', exist_ok=True)
-        train_dataset = dataset(cfg.defaults.datadir, split='train', downsample=args.downsample_train, is_stack=True)
-        PSNRs_test = evaluation(train_dataset,model, args, renderer, f'{logfolder}/imgs_train_all/',
+        train_dataset = dataset(cfg.defaults.datadir, split='train', downsample=args.downsample_train)
+        PSNRs_test = evaluation(train_dataset, model, args, render_ray, f'{logfolder}/imgs_train_all/',
                                 N_vis=-1, N_samples=-1, white_bg = white_bg, ndc_ray=ndc_ray,device=device)
         print(f'======> {cfg.defaults.expname} test all psnr: {np.mean(PSNRs_test)} <========================')
     
