@@ -1,5 +1,5 @@
 defaults:
-  expname: basis
+  expname: basis_ft
   logdir: ./logs
 
   mode: 'reconstructions'
@@ -34,7 +34,7 @@ model:
 dataset:
   # loader options
   dataset_name: google_objs # choices=['blender', 'llff', 'nsvf', 'dtu','tankstemple', 'own_data']
-  datadir: /vlg-nfs/anpei/dataset/google_scanned_objects
+  datadir: ./data/google_scanned_objects
   ndc_ray: 0
   train_scene_list: [100]
   test_scene_list: [100]
