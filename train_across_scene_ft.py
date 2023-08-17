@@ -227,6 +227,17 @@ def reconstruction(cfg):
             grad_vars = model.get_optparam_groups(cfg.training.lr_small, cfg.training.lr_large)
             optimizer = torch.optim.Adam(grad_vars, betas=(0.9, 0.99))
 
+        if cfg.exportation.render_test and (iteration + 1) % (cfg.training.t_iters // steps_inner) == 0:
+            os.makedirs(f'{logfolder}/imgs_test_all_{iteration}', exist_ok=True)
+            model.save(f'{logfolder}/{cfg.defaults.expname}_{iteration}.th')
+            if 'reconstructions' in cfg.defaults.mode:
+                model.scene_idx = test_dataset.test_index
+            PSNRs_test = evaluation(test_dataset, model, render_ray, f'{logfolder}/imgs_test_all_{iteration}/',
+                                    N_vis=-1, N_samples=-1, white_bg=white_bg, ndc_ray=ndc_ray, device=device)
+            summary_writer.add_scalar('test/psnr_all', np.mean(PSNRs_test), global_step=iteration)
+            n_params = model.n_parameters()
+            print(f'======> {cfg.defaults.expname} test all psnr: {np.mean(PSNRs_test)} n_params: {n_params} <========================')
+
     time_iter = time.time()-start
     print(f'=======> time takes: {time_iter} <=============')
     os.makedirs(f'{logfolder}/imgs_test_all/', exist_ok=True)
