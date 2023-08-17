@@ -51,6 +51,7 @@ dataset:
 training:
 
   n_iters: 5000
+  t_iters: 1250
   batch_size: 4096
 
   volume_resoInit: 128 # 128**3：
