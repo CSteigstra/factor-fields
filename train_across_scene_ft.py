@@ -233,10 +233,10 @@ def reconstruction(cfg):
     np.savetxt(f'{logfolder}/imgs_test_all/time.txt',[time_iter])
     model.save(f'{logfolder}/{cfg.defaults.expname}.th')
 
-    if args.render_train:
+    if cfg.exportation.render_train:
         os.makedirs(f'{logfolder}/imgs_train_all', exist_ok=True)
         train_dataset = dataset(cfg.defaults.datadir, split='train', downsample=args.downsample_train, is_stack=True)
-        PSNRs_test = evaluation(train_dataset,model, args, renderer, f'{logfolder}/imgs_train_all/',
+        PSNRs_test = evaluation(train_dataset,model, args, render_ray, f'{logfolder}/imgs_train_all/',
                                 N_vis=-1, N_samples=-1, white_bg = white_bg, ndc_ray=ndc_ray,device=device)
         print(f'======> {cfg.defaults.expname} test all psnr: {np.mean(PSNRs_test)} <========================')
     
