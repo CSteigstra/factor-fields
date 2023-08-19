@@ -71,6 +71,10 @@ The training script can be found at `2D_set_regression.ipynb`
 
 ## Generalization NeRF
 * [Data - Google Scanned Objects](https://drive.google.com/file/d/1w1Cs0yztH6kE3JIz7mdggvPGCwIKkVi2/view)
+```bash
+!cat shoes_google_scanned_object.txt | while read -r line; do unzip -q google_scanned_objects_renderings.zip "google_scanned_objects/${line:0:11}/*" -d "data/"; done
+```
+
 
 ```python
 python train_across_scene.py configs/nerf_set.yaml
