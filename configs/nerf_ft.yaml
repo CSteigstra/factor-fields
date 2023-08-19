@@ -36,15 +36,15 @@ dataset:
   dataset_name: google_objs # choices=['blender', 'llff', 'nsvf', 'dtu','tankstemple', 'own_data']
   datadir: ./data/google_scanned_objects
   ndc_ray: 0
-  train_scene_list: [100]
-  test_scene_list: [100]
+  train_scene_list: [101]
+  test_scene_list: [101]
   train_views: 5
 
   with_depth: 0
   downsample_train: 1.0
   downsample_test: 1.0
 
-  N_vis: 5
+  N_vis: 10
   vis_every: 100000
   scene_reso: 768
 
