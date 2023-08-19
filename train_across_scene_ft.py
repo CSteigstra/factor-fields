@@ -233,7 +233,7 @@ def reconstruction(cfg):
             if 'reconstructions' in cfg.defaults.mode:
                 model.scene_idx = test_dataset.test_index
             PSNRs_test = evaluation(test_dataset, model, render_ray, f'{logfolder}/imgs_test_all_{iteration}/',
-                                    N_vis=-1, N_samples=-1, white_bg=white_bg, ndc_ray=ndc_ray, device=device)
+                                    N_vis=cfg.dataset.N_vis, N_samples=-1, white_bg=white_bg, ndc_ray=ndc_ray, device=device)
             summary_writer.add_scalar('test/psnr_all', np.mean(PSNRs_test), global_step=iteration)
             n_params = model.n_parameters()
             print(f'======> {cfg.defaults.expname} test all psnr: {np.mean(PSNRs_test)} n_params: {n_params} <========================')
