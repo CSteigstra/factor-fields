@@ -227,7 +227,7 @@ def reconstruction(cfg):
             grad_vars = model.get_optparam_groups(cfg.training.lr_small, cfg.training.lr_large)
             optimizer = torch.optim.Adam(grad_vars, betas=(0.9, 0.99))
 
-        if cfg.exportation.render_test and iteration % cfg.training.t_iters == 0:
+        if cfg.exportation.render_test and (iteration + 1) % (cfg.training.t_iters + 1) == 0:
             os.makedirs(f'{logfolder}/imgs_test_all_{iteration}', exist_ok=True)
             model.save(f'{logfolder}/{cfg.defaults.expname}_{iteration}.th')
             if 'reconstructions' in cfg.defaults.mode:
